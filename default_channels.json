@@ -1,0 +1,18 @@
+[
+  {
+      "id": "1",
+      "name": "Nova",
+      "logo_url": "www.sms.cz/kategorie/televize/bmp/loga/velka/nova.png"
+  },
+  {
+      "id": "2",
+      "name": "ČT1",
+      "logo_url": "www.sms.cz/kategorie/televize/bmp/loga/velka/ct1.png"
+  }
+  ,
+  {
+      "id": "4",
+      "name": "Prima",
+      "logo_url": "www.sms.cz/kategorie/televize/bmp/loga/velka/prima.png"
+  }
+]
