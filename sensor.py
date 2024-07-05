@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime, timezone
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.core import callback
 from .const import DOMAIN, DEVICE_CLASS_TIMESTAMP, CONF_TV_IDS, CONF_DAYS, SCAN_INTERVAL
 from .coordinator import EPGDataUpdateCoordinator
 

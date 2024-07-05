@@ -1,7 +1,6 @@
 import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-
 from .const import DOMAIN, CONF_DAYS, CONF_TV_IDS
 
 _LOGGER = logging.getLogger(__name__)
@@ -13,8 +12,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = entry
 
     # Retrieve configuration data
-    days = entry.data.get(CONF_DAYS, 3)
-    tv_ids = entry.data.get(CONF_TV_IDS, [])
+    options = entry.options or entry.data
+    days = options.get(CONF_DAYS, 3)
+    tv_ids = options.get(CONF_TV_IDS, [])
 
     _LOGGER.info(f"Setting up EPG sensor with {days} days and TV IDs: {tv_ids}")
 

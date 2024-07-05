@@ -4,7 +4,6 @@
     "version": "0.1",
     "documentation": "https://github.com/jerod33/Tv-Program",
     "requirements": ["aiofiles"],
-     
     "codeowners": ["@jerod33"],
     "iot_class": "cloud_polling",
     "config_flow": true
