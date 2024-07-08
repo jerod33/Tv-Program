@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timezone
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.core import callback
 from .const import DOMAIN, DEVICE_CLASS_TIMESTAMP, CONF_TV_IDS, CONF_DAYS, SCAN_INTERVAL
 from .coordinator import EPGDataUpdateCoordinator
 
@@ -16,14 +17,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     id_tv_list = options.get(CONF_TV_IDS, [])
     days = options.get(CONF_DAYS, 3)
 
-    # Remove old sensors
-    old_sensors = hass.data.get(DOMAIN, {}).get(config_entry.entry_id, {}).get("sensors", [])
-    if old_sensors:
-        _LOGGER.info(f"Removing old sensors: {old_sensors}")
-        entity_registry = await hass.helpers.entity_registry.async_get_registry()
-        for sensor in old_sensors:
-            entity_registry.async_remove(sensor)
-
     sensors = []
     # Adding yesterday's sensor
     yesterday_coordinator = EPGDataUpdateCoordinator(hass, id_tv_list, -1)
@@ -38,9 +31,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     async_add_entities(sensors)
 
-    # Save the list of sensor entity IDs
-    hass.data.setdefault(DOMAIN, {}).setdefault(config_entry.entry_id, {})["sensors"] = [sensor.entity_id for sensor in sensors]
-
     _LOGGER.info("EPG Sensors added to Home Assistant.")
 
 @callback
@@ -52,6 +42,7 @@ async def async_reload_sensors(hass, config_entry):
     )
     if platform is not None:
         _LOGGER.info("Reloading EPG sensors...")
+        platform.async_remove_entities(list(platform.entities))
         await async_setup_entry(hass, config_entry, platform.async_add_entities)
         _LOGGER.info("EPG sensors reloaded.")
 
