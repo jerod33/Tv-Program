@@ -1,5 +1,5 @@
 # Tv-Program
-This integration for Home Assistant provides Czech and Slovak TV program guide sensors
+Tato integrace pro Home Assistant poskytuje senzory televizního programu pro české a slovenské kanály.
 
 ## Instalace
 
@@ -14,4 +14,9 @@ This integration for Home Assistant provides Czech and Slovak TV program guide s
 - Stáhněte si repo a zkopírujte do adresáře custom_components/tv_program 
 
 
+## Nastavení
+- Ze seznamu vyberte kanály, které chcete sledovat, a nastavte počet dní pro zobrazení programu (výchozí je 7 dní).
 ![Alt text](grafik.png)
+
+## Změna nastavení
+-Pokud změníte již jednou provedené nastavení, je potřeba znovu načíst integraci.
