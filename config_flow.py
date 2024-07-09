@@ -52,7 +52,7 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
-                vol.Required(CONF_TV_IDS, default=saved_data.get(CONF_TV_IDS, []), description="Select the TV stations you want to monitor"): cv.multi_select(tv_ids),
+                vol.Required(CONF_TV_IDS, default=saved_data.get(CONF_TV_IDS, []), description_placeholders="Select the TV stations you want to monitor"): cv.multi_select(tv_ids),
                 vol.Required(CONF_DAYS, default=saved_data.get(CONF_DAYS, 7), description="Set the number of days to show in the EPG (1-7)"): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
             errors=errors,
@@ -96,7 +96,7 @@ class EPGOptionsFlow(config_entries.OptionsFlow):
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema({
-                vol.Required(CONF_TV_IDS, default=self.config_entry.options.get(CONF_TV_IDS, []), description="Select the TV stations you want to monitor"): cv.multi_select(tv_ids),
+                vol.Required(CONF_TV_IDS, default=self.config_entry.options.get(CONF_TV_IDS, []), description_placeholders="Select the TV stations you want to monitor"): cv.multi_select(tv_ids),
                 vol.Required(CONF_DAYS, default=self.config_entry.options.get(CONF_DAYS, 7), description="Set the number of days to show in the EPG (1-7)"): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
         )
