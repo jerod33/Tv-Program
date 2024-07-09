@@ -15,7 +15,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     options = config_entry.options or config_entry.data
 
     id_tv_list = options.get(CONF_TV_IDS, [])
-    days = options.get(CONF_DAYS, 3)
+    days = options.get(CONF_DAYS, 7)
 
     sensors = []
     # Adding yesterday's sensor
