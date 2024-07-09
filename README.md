@@ -12,3 +12,6 @@ This integration for Home Assistant provides Czech and Slovak TV program guide s
 ### Ručně
 
 - Stáhněte si repo a zkopírujte do adresáře custom_components/tv_program 
+
+
+![Alt text](grafik.png)
