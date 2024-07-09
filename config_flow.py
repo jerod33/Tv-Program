@@ -55,6 +55,10 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_TV_IDS, default=saved_data.get(CONF_TV_IDS, [])): cv.multi_select(tv_ids),
                 vol.Required(CONF_DAYS, default=saved_data.get(CONF_DAYS, 3)): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
+            description_placeholders={
+                CONF_TV_IDS: "Vyberte kanály, které chcete sledovat.",
+                CONF_DAYS: "Nastavte počet dní pro zobrazení programu (výchozí je 7 dní).",
+            },
             errors=errors,
         )
 
@@ -99,4 +103,8 @@ class EPGOptionsFlow(config_entries.OptionsFlow):
                 vol.Required(CONF_TV_IDS, default=self.config_entry.options.get(CONF_TV_IDS, [])): cv.multi_select(tv_ids),
                 vol.Required(CONF_DAYS, default=self.config_entry.options.get(CONF_DAYS, 3)): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
+            description_placeholders={
+                CONF_TV_IDS: "Vyberte kanály, které chcete sledovat.",
+                CONF_DAYS: "Nastavte počet dní pro zobrazení programu (výchozí je 7 dní).",
+            },
         )
