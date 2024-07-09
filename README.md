@@ -20,3 +20,4 @@ Tato integrace pro Home Assistant poskytuje senzory televizního programu pro č
 
 ## Změna nastavení
 -Pokud změníte již jednou provedené nastavení, je potřeba znovu načíst integraci.
+ sem obr
