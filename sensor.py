@@ -87,3 +87,7 @@ class EPGSensor(CoordinatorEntity):
         return {
             "data": self.coordinator.data,
         }
+    @property
+    def icon(self) -> str:
+        """Icon of the entity."""
+        return "mdi:television-box"    
