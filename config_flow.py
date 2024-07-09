@@ -56,9 +56,6 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_DAYS, default=saved_data.get(CONF_DAYS, 7)): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
             errors=errors,
-            description_placeholders={
-                "description": "Vyberte TV kanály, které chcete sledovat a nastavte počet dní pro zobrazení programu (1-7)."
-            },
         )
 
     def _async_get_saved_data(self):
@@ -86,7 +83,7 @@ class EPGOptionsFlow(config_entries.OptionsFlow):
             # Update entry with new options
             self.hass.config_entries.async_update_entry(self.config_entry, options=user_input)
             await async_reload_sensors(self.hass, self.config_entry)
-            return self.async_create_entry(title="EPG Sensor", data=user_input)
+            return self.async_create_entry(title="", data=user_input)
 
         # Load TV station data from JSON file asynchronously
         data_file = os.path.join(os.path.dirname(__file__), "default_channels.json")
@@ -102,7 +99,4 @@ class EPGOptionsFlow(config_entries.OptionsFlow):
                 vol.Required(CONF_TV_IDS, default=self.config_entry.options.get(CONF_TV_IDS, [])): cv.multi_select(tv_ids),
                 vol.Required(CONF_DAYS, default=self.config_entry.options.get(CONF_DAYS, 7)): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
-            description_placeholders={
-                "description": "Vyberte TV kanály, které chcete sledovat a nastavte počet dní pro zobrazení programu (1-7)."
-            },
         )
