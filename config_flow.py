@@ -6,6 +6,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
+from homeassistant.data_entry_flow import FlowResult
 
 from .const import CONF_TV_IDS, CONF_DAYS, DOMAIN
 from .sensor import async_reload_sensors
@@ -17,7 +18,17 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    def __init__(self) -> None:
+        super().__init__()
+        self._data: dict[str, str] = {}
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        """Get the options flow for this handler."""
+        return EPGOptionsFlow(config_entry)
+
+    async def async_step_user(self, user_input=None) -> FlowResult:
         """Handle the initial step."""
         errors = {}
 
@@ -37,15 +48,16 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.debug(f"User Input: {user_input}")
 
             # Create or update entry with both data and options
-            self.data = {
+            self._data = {
                 CONF_TV_IDS: selected_tv_ids,
                 CONF_DAYS: days,
             }
 
-            return self.async_create_entry(title="EPG Sensor", data=self.data)
+            return self.async_create_entry(title="EPG Sensor", data=self._data)
 
         # If no user input, initialize with default or saved values
-        saved_data = self._async_get_saved_data()
+        current_entry = self._async_current_entries()
+        saved_data = current_entry[0].data if current_entry else {}
 
         _LOGGER.debug(f"Saved Data: {saved_data}")
 
@@ -58,18 +70,6 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    def _async_get_saved_data(self):
-        """Retrieve saved configuration data if available."""
-        if self._async_current_entries():
-            return self._async_current_entries()[0].data
-        return {}
-
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry):
-        """Get the options flow for this handler."""
-        return EPGOptionsFlow(config_entry)
-
 class EPGOptionsFlow(config_entries.OptionsFlow):
     """Handle options flow for the EPG sensor."""
 
@@ -77,7 +77,7 @@ class EPGOptionsFlow(config_entries.OptionsFlow):
         """Initialize options flow."""
         self.config_entry = config_entry
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(self, user_input=None) -> FlowResult:
         """Handle options flow initialization."""
         if user_input is not None:
             # Update entry with new options
