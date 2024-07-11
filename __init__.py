@@ -13,8 +13,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = entry
 
     # Retrieve configuration data
-    days = entry.data.get(CONF_DAYS, 3)
-    tv_ids = entry.data.get(CONF_TV_IDS, [])
+    days = entry.options.get(CONF_DAYS, 7)  # Use options instead of data
+    tv_ids = entry.options.get(CONF_TV_IDS, [])  # Use options instead of data
 
     _LOGGER.info(f"Setting up EPG sensor with {days} days and TV IDs: {tv_ids}")
 

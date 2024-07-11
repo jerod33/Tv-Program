@@ -13,14 +13,20 @@ from .sensor import async_reload_sensors
 
 _LOGGER = logging.getLogger(__name__)
 
+async def load_tv_data():
+    """Load TV station data from JSON file asynchronously."""
+    data_file = os.path.join(os.path.dirname(__file__), "default_channels.json")
+    async with aiofiles.open(data_file, "r") as f:
+        tv_data = await f.read()
+    return json.loads(tv_data)
+
 class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for EPG sensor."""
 
     VERSION = 1
 
-    def __init__(self) -> None:
-        super().__init__()
-        self._data: dict[str, str] = {}
+    def __init__(self):
+        self._data = {}
 
     @staticmethod
     @callback
@@ -32,12 +38,7 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         errors = {}
 
-        # Load TV station data from JSON file asynchronously
-        data_file = os.path.join(os.path.dirname(__file__), "default_channels.json")
-        async with aiofiles.open(data_file, "r") as f:
-            tv_data = await f.read()
-        tv_data = json.loads(tv_data)
-
+        tv_data = await load_tv_data()
         tv_ids = {tv["id"]: tv["name"] for tv in tv_data}
 
         if user_input is not None:
@@ -55,17 +56,11 @@ class EPGConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             return self.async_create_entry(title="EPG Sensor", data=self._data)
 
-        # If no user input, initialize with default or saved values
-        current_entry = self._async_current_entries()
-        saved_data = current_entry[0].data if current_entry else {}
-
-        _LOGGER.debug(f"Saved Data: {saved_data}")
-
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
-                vol.Required(CONF_TV_IDS, default=saved_data.get(CONF_TV_IDS, [])): cv.multi_select(tv_ids),
-                vol.Required(CONF_DAYS, default=saved_data.get(CONF_DAYS, 7)): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
+                vol.Required(CONF_TV_IDS, default=[]): cv.multi_select(tv_ids),
+                vol.Required(CONF_DAYS, default=7): vol.All(vol.Coerce(int), vol.Range(min=1, max=7)),
             }),
             errors=errors,
         )
@@ -85,12 +80,7 @@ class EPGOptionsFlow(config_entries.OptionsFlow):
             await async_reload_sensors(self.hass, self.config_entry)
             return self.async_create_entry(title="", data=user_input)
 
-        # Load TV station data from JSON file asynchronously
-        data_file = os.path.join(os.path.dirname(__file__), "default_channels.json")
-        async with aiofiles.open(data_file, "r") as f:
-            tv_data = await f.read()
-        tv_data = json.loads(tv_data)
-
+        tv_data = await load_tv_data()
         tv_ids = {tv["id"]: tv["name"] for tv in tv_data}
 
         return self.async_show_form(
