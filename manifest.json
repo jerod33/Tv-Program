@@ -1,7 +1,7 @@
 {
     "domain": "tv_program",
     "name": "TV Program",
-    "version": "0.4.0",
+    "version": "0.9.0",
     "documentation": "https://github.com/jerod33/Tv-Program",
     "requirements": ["aiofiles"],
     "codeowners": ["@jerod33"],

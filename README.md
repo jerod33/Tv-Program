@@ -16,8 +16,10 @@ Tato integrace pro Home Assistant poskytuje senzory televizního programu pro č
 
 ## Nastavení
 - Ze seznamu vyberte kanály, které chcete sledovat, a nastavte počet dní pro zobrazení programu (výchozí je 7 dní).
+
 ![Alt text](grafik.png)
 
 ## Změna nastavení
 -Pokud změníte již jednou provedené nastavení, je potřeba znovu načíst integraci.
- sem obr
+ 
+ ![Alt text](grafik-1.png)
