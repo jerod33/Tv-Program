@@ -19,7 +19,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.info(f"Setting up EPG sensor with {days} days and TV IDs: {tv_ids}")
 
     # Setup sensor platform
-    await hass.config_entries.async_forward_entry_setup(entry, "sensor")
+    await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+
+    #await hass.config_entries.async_forward_entry_setup(entry, "sensor")
 
     return True
 
