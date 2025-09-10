@@ -63,7 +63,7 @@ class EPGDataUpdateCoordinator(DataUpdateCoordinator):
                     # Get channel info based on id_tv
                     channel_info = self.tv_ids_to_info.get(program['@id_tv'], {"name": "Unknown Channel", "logo_url": ""})
                     channel_name = channel_info["name"]
-                    logo_url = channel_info["logo_url"] #ToDo URL-mit to online a ne offline?Aktualne''
+                    logo_url = channel_info["logo_url"]
 
                     entry = {
                         "id_tv": program['@id_tv'],
